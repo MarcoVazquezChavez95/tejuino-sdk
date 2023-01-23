@@ -1,0 +1,89 @@
+@extends('admin.base.layout', [
+    'plugins' => ['datatable', 'datatable_reorder'],
+    'js' => ['{{module}}.list']
+])
+
+@section('navbar')
+    <a href="#modalCreate" class="btn btn-md btn-primary pull-left" data-toggle="modal">
+        <i class="icon-plus m-r-5"></i> Nuevo
+    </a>
+@endsection
+
+@section('content')
+    <h1 class="page-header">{{Entities}}</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_{{entities}}" class="table table-striped table-bordered bg-white">
+                <thead>
+                    <tr>
+                        <th>Orden</th>
+                        <th>ID</th>
+                        <th>Portada</th>
+                        <th>Título</th>
+                        <th>Creado</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(${{entities}} as ${{entity}})
+                        <tr data-id="{{ ${{entity}}->id }}" id="row_{{ ${{entity}}->id }}" class="orderable">
+                            <td class="draggable">
+                                {{ ${{entity}}->priority }}
+                            </td>
+                            <td>
+                                {{ ${{entity}}->id }}
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.{{module}}.show', ${{entity}}) }}">
+                                    <div class="preview" style="background-image: url({{ ${{entity}}->image }})"></div>
+                                </a>
+                            </td>
+                            <td class="f-w-600 f-s-14">
+                                <a href="{{ route('admin.{{module}}.show', ${{entity}}) }}">
+                                    {{ ${{entity}}->title }}
+                                </a><br>
+                                <small>{{ ${{entity}}->description }}</small>
+                            </td>
+                            <td class="f-s-10" nowrap>
+                                creado: <strong>{{ ${{entity}}->created_by->name }}</strong><br>
+                                @if(${{entity}}->updated_by)
+                                    modificado: <strong>{{ ${{entity}}->updated_by->name }}</strong><br>
+                                @endif
+                                <small>{{ ${{entity}}->created_at->diffForHumans() }}</small>
+                            </td>
+                            <td>
+                                <input type="checkbox" class="switch" toggle-status="{{ ${{entity}}->id }}" {{ ${{entity}}->active ? 'checked' : '' }} />
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.{{module}}.show', ${{entity}}) }}" class="btn btn-white btn-sm">
+                                    <i class="icon-pencil"></i> Editar
+                                </a>
+                                <a href="{{ route('admin.{{module}}.delete', ${{entity}}) }}" class="btn btn-white btn-sm" confirm="¿Confirma eliminar este elemento y su contenido?">
+                                    <i class="icon-trash text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
+
+@section('modals')
+    <x-modal title="Nuevo">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Título</label>
+            <div class="col-md-9">
+                <input class="form-control" name="title" placeholder="Título" type="text" maxlength="50" required />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Descripción</label>
+            <div class="col-md-9">
+                <textarea name="description" class="form-control" maxlength="250"></textarea>
+            </div>
+        </div>
+    </x-modal>
+@endsection

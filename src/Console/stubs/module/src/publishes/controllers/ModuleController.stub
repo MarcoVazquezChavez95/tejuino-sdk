@@ -1,0 +1,187 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Models\{{Module}}\{{Entity}};
+use Illuminate\Http\Request;
+use AdminController;
+use Files;
+
+class {{Module}}Controller extends AdminController
+{
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+        $this->section = '{{Module}}';
+        $this->base .= '{{module}}/';
+    }
+
+    /**
+     * Module index / list
+     *
+     * @return view
+     */
+    public function index()
+    {
+        ${{entities}} = {{Entity}}::orderBy('id', 'desc')->get();
+
+        return $this->view('{{module}}.list', [
+            '{{entities}}' => ${{entities}}
+        ]);
+    }
+
+    /**
+     * Create a record of {{Entity}}
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function create(Request $request)
+    {
+        $new{{Entity}} = new {{Entity}}();
+        $new{{Entity}}->title = $request->title;
+        $new{{Entity}}->description = $request->description;
+        $new{{Entity}}->priority = {{Entity}}::max('priority') + 1;
+        $new{{Entity}}->save();
+
+        return redirect($this->base);
+    }
+
+    /**
+     * Show a record of {{Entity}}
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @param string $slug
+     * @return view
+     */
+    public function show(Request $request, {{Entity}} ${{entity}}, $slug = '')
+    {
+        return $this->view('{{module}}.edit', [
+            '{{entity}}' => ${{entity}}
+        ]);
+    }
+
+    /**
+     * Update a record of {{Entity}}
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @return void
+     */
+    public function update(Request $request, {{Entity}} ${{entity}})
+    {
+        ${{entity}}->title = $request->title;
+        ${{entity}}->description = $request->description;
+        ${{entity}}->tags = $request->tags;
+        ${{entity}}->save();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Reorder priority
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @param int $priority
+     * @return array
+     */
+    public function reorder(Request $request, {{Entity}} ${{entity}}, $priority)
+    {
+        ${{entity}}->priority = $priority;
+        ${{entity}}->save();
+
+        return [
+            '{{entity}}' => ${{entity}}
+        ];
+    }
+
+    /**
+     * Activate a record of {{Entity}}
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @return array
+     */
+    public function activate(Request $request, {{Entity}} ${{entity}})
+    {
+        ${{entity}}->active = 1;
+        ${{entity}}->save();
+
+        return [
+            '{{entity}}' => ${{entity}}
+        ];
+    }
+
+    /**
+     * Deactivate a record of {{Entity}}
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @return array
+     */
+    public function deactivate(Request $request, {{Entity}} ${{entity}})
+    {
+        ${{entity}}->active = 0;
+        ${{entity}}->save();
+
+        return [
+            '{{entity}}' => ${{entity}}
+        ];
+    }
+
+    /**
+     * Upload a file
+     *
+     * @param Request $request
+     * @param City $city
+     * @return void
+     */
+    public function upload(Request $request, {{Entity}} ${{entity}})
+    {
+        $response = [
+            'result' => 'error'
+        ];
+
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $ext = strtolower(pathinfo($request->file('file')->getClientOriginalName(), PATHINFO_EXTENSION));
+
+            if (in_array($ext, ['jpg', 'jpeg', 'png'])) {
+                $newFile = Files::save($request->file('file')->getRealPath(), $ext, '{{module}}', '{{entity}}_');
+                ${{entity}}->image = $newFile;
+                ${{entity}}->save();
+
+                $response['result'] = 'ok';
+                $response['file'] = ${{entity}}->image;
+            }
+            else {
+                $response['result'] = 'error_type';
+                $response['message'] = 'Only jpg and png images allowed';
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * Delete a record of {{Entity}}
+     *
+     * @param Request $request
+     * @param {{Entity}} ${{entity}}
+     * @return void
+     */
+    public function delete(Request $request, {{Entity}} ${{entity}})
+    {
+        try {
+            ${{entity}}->delete();
+        }
+        catch (\Exception $ex) {
+            return redirect()->back()->withErrors(['message' => $ex->getMessage()]);
+        }
+
+        return redirect($this->base);
+    }
+
+}

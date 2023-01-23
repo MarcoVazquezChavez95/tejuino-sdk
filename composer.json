@@ -1,0 +1,24 @@
+{
+    "name": "tejuino/sdk",
+    "description": "Tejuino sdk platform V2",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Rafael Alfaro",
+            "email": "rafael@tejuino.mx"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tejuino\\Sdk\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tejuino\\Sdk\\SdkServiceProvider"
+            ]
+        }
+    }
+}

@@ -1,0 +1,74 @@
+@extends('admin.base.layout', [
+    'plugins' => ['uploader', 'tagit'],
+    'js' => ['{{module}}.edit']
+])
+
+@section('title')Editar: {{ ${{entity}}->title }}@endsection
+
+@section('navbar')
+    <a href="{{ $base }}" class="btn btn-white m-r-10">
+        <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="#" class="btn btn-success" submit="#editForm">
+        <i class="fa fa-check"></i> Guardar
+    </a>
+@endsection
+
+@section('content')
+    <h1 class="page-header">
+        <i class="icon-pencil"></i> Editar "{{ ${{entity}}->title }}"
+    </h1>
+    <form id="editForm" method="post" action="{{ route('admin.{{entities}}.update', ${{entity}}) }}"
+        class="form-horizontal form-bordered" data-parsley-validate="true">
+
+        <input type="hidden" name="id" id="id" value="{{ ${{entity}}->id }}" />
+
+        <div class="row">
+            <div class="col-md-6">
+                <x-panel title="Información básica">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Activo</label>
+                        <div class="col-md-9">
+                            <input type="checkbox" class="switch" toggle-status="{{ ${{entity}}->id }}" {{ ${{entity}}->active ? 'checked' : '' }} />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Título</label>
+                        <div class="col-md-9">
+                            <input type="text" name="title" value="{{ ${{entity}}->title }}" class="form-control" placeholder="Título" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Descripción</label>
+                        <div class="col-md-9">
+                            <textarea name="description" class="form-control">{{ ${{entity}}->description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Etiquetas</label>
+                        <div class="col-md-9">
+                            <input type="hidden" id="tags" name="tags" placeholder="" value="{{ ${{entity}}->tags }}" class="inverse" />
+                            <small>Escriba una etiqueta y presione <strong>Enter</strong></small>
+                        </div>
+                    </div>
+                </x-panel>
+            </div>
+            <div class="col-md-6">
+                <x-panel title="Imagen">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">
+                            Portada
+                            <small>
+                                <i class="fa fa-image"></i> .jpg ó .png<br>
+                                <i class="fa fa-arrows-alt"></i> 800 x 600
+                            </small>
+                        </label>
+                        <div class="col-md-9">
+                            <div id="image" class="preview" style="background-image:url({{ ${{entity}}->image }})"></div>
+                        </div>
+                    </div>
+                </x-panel>
+            </div>
+        </div>
+    </form>
+@endsection

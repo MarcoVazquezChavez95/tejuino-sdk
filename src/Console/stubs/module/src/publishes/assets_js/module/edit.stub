@@ -1,0 +1,7 @@
+$(document).ready(function () {
+    $('#image').uploader({ url: $('#id').val() + '/upload/image' }, function(data){
+        $('#image').css('background-image', 'url(' + data.file + ')')
+    });
+
+    controls.tags($('#tags'));
+});

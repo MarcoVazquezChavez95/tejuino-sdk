@@ -1,0 +1,15 @@
+<?php
+
+// {{title}}
+
+Route::group(['prefix' => '{{module}}'], function() {
+    Route::post('/create','{{Module}}Controller@create')->name('admin.{{module}}.create');
+    Route::get('/{{{entity}}}/delete','{{Module}}Controller@delete')->name('admin.{{module}}.delete');
+    Route::post('/{{{entity}}}/upload/{type?}', '{{Module}}Controller@upload')->name('admin.{{module}}.upload');
+    Route::post('/{{{entity}}}/reorder/{priority}', '{{Module}}Controller@reorder')->name('admin.{{module}}.reorder');
+    Route::post('/{{{entity}}}/activate','{{Module}}Controller@activate')->name('admin.{{module}}.activate');
+    Route::post('/{{{entity}}}/deactivate','{{Module}}Controller@deactivate')->name('admin.{{module}}.deactivate');
+    Route::post('/{{{entity}}}/update','{{Module}}Controller@update')->name('admin.{{module}}.update');
+    Route::get('/{{{entity}}}','{{Module}}Controller@show')->name('admin.{{module}}.show');
+    Route::get('/','{{Module}}Controller@index')->name('admin.{{module}}.list');
+});

@@ -1,0 +1,31 @@
+$(document).ready(function () {
+    var table = controls.datatable($('#table_{{entities}}'), {
+        rowReorder: true
+    });
+
+    table.on('row-reorder', function (e, diff, edit) {
+        var startedId = 0;
+
+        for (var i = 0, ien = diff.length; i < ien; i++) {
+            startedId = edit.triggerRow.data()[1];
+            var rowData = table.row(diff[i].node).data();
+
+            var id = rowData[1];
+            var priority = diff[i].newData;
+
+            $('#row_' + id).addClass('saved');
+
+            $.ajax({
+                url: id + '/reorder/' + priority,
+                data: {},
+                type: 'POST',
+                success: function (response) {}
+            });
+        }
+
+        $('#row_' + startedId).eq(0).addClass('first');
+        setTimeout(function () {
+            $('tr.saved').removeClass('saved first');
+        }, 2000);
+    });
+});

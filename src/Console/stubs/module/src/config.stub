@@ -1,0 +1,48 @@
+<?php
+
+return [
+
+    'name' => '{{module}}',
+    'publishes' => [
+        'config' => [
+
+        ],
+        'controllers' => [
+            '{{Module}}Controller.php'
+        ],
+        'middleware' => [
+
+        ],
+        'migrations' => [
+            '{{migration_timestamp}}_{{module}}_module.php'
+        ],
+        'seeds' => [
+
+        ],
+        'routes' => [
+            '{{module}}.php'
+        ],
+        'models' => [
+            '{{Module}}',
+        ],
+        'views' => [
+            '{{module}}'
+        ],
+        'assets_css' => [
+
+        ],
+        'assets_js' => [
+            '{{module}}'
+        ],
+        'admin_assets' => [
+
+        ],
+        'files' => [
+            '{{module}}'
+        ]
+    ],
+    'migrates' => [
+
+    ]
+
+];

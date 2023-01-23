@@ -1,0 +1,21 @@
+<?php
+
+namespace Tejuino\{{Module}};
+
+use Tejuino\Sdk\Package;
+use Tejuino\Sdk\Traits\Publishable;
+use Illuminate\Support\ServiceProvider;
+
+class {{Module}}ServiceProvider extends ServiceProvider
+{
+    use Publishable;
+
+    protected $config;
+
+    public function boot()
+    {
+        $this->config = Package::getConfig(__DIR__);
+        $this->publishFiles(__DIR__);
+    }
+
+}

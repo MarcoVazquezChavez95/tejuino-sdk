@@ -1,0 +1,24 @@
+{
+    "name": "tejuino/{{module}}",
+    "description": "Tejuino Admin {{Module}} Module",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Tejuino Developers",
+            "email": "developers@tejuino.mx"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tejuino\\{{Module}}\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tejuino\\{{Module}}\\{{Module}}ServiceProvider"
+            ]
+        }
+    }
+}

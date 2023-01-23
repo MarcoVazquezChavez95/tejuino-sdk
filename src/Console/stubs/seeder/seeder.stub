@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Tejuino\Adminbase\Console\Logger as Log;
+
+class {{Class}}Seeder extends Seeder
+{
+
+    public function run()
+    {
+        // Rows
+        $rows = [];
+        {{rows}}
+
+        // Disable FKs & truncate tables
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::table('{{table}}')->truncate();
+
+        // Create rows
+        foreach ($rows as $row) {
+            $record = new {{class_path}};
+
+            foreach($row as $key => $value) {
+                $record[$key] = $value;
+            }
+
+            $record->save();
+        }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+    }
+}
